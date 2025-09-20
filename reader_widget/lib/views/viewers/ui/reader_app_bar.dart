@@ -11,6 +11,7 @@ import 'package:iridium_reader_widget/views/viewers/ui/settings/settings_panel.d
 import 'package:iridium_reader_widget/util/router.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
+import 'package:mno_shared/publication.dart';
 
 class ReaderAppBar extends StatefulWidget {
   final ReaderContext readerContext;
@@ -65,6 +66,10 @@ class ReaderAppBarState extends State<ReaderAppBar> {
                   color: Theme.of(context).colorScheme.onPrimaryContainer,
                 ),
                 actions: [
+                  IconButton(
+                    onPressed: _onSearchPressed,
+                    icon: const Icon(Icons.search),
+                  ),
                   IconButton(
                     onPressed: _onBookmarkPressed,
                     icon: const ImageIcon(
@@ -142,5 +147,65 @@ class ReaderAppBarState extends State<ReaderAppBar> {
   void _onMenuPressed() {
     MyRouter.pushPage(
         context, ReaderNavigationScreen(readerContext: readerContext));
+  }
+
+  void _onSearchPressed() async {
+    final query = await showSearch<String>(
+      context: context,
+      delegate: _InBookSearchDelegate(),
+    );
+    if (query != null && query.trim().isNotEmpty) {
+      final link = readerContext.currentSpineItem;
+      if (link == null) return;
+      final locator = Locator(
+        href: link.href,
+        type: link.type ?? 'application/xhtml+xml',
+        title: link.title,
+        locations: Locations(),
+        text: LocatorText(highlight: query.trim()),
+      );
+      readerContext.execute(GoToLocationCommand.locator(locator));
+    }
+  }
+}
+
+class _InBookSearchDelegate extends SearchDelegate<String> {
+  @override
+  List<Widget>? buildActions(BuildContext context) => [
+        IconButton(
+          icon: const Icon(Icons.clear),
+          onPressed: () {
+            if (query.isEmpty) {
+              close(context, '');
+            } else {
+              query = '';
+              showSuggestions(context);
+            }
+          },
+        )
+      ];
+
+  @override
+  Widget? buildLeading(BuildContext context) => IconButton(
+        icon: const Icon(Icons.arrow_back),
+        onPressed: () => close(context, ''),
+      );
+
+  @override
+  Widget buildResults(BuildContext context) {
+    close(context, query);
+    return const SizedBox.shrink();
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return Container(
+      alignment: Alignment.topLeft,
+      padding: const EdgeInsets.all(16),
+      child: Text(
+        'Search in current chapter',
+        style: Theme.of(context).textTheme.bodyMedium,
+      ),
+    );
   }
 }

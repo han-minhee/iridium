@@ -97,7 +97,8 @@ class BookListItem extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 17.0,
                             fontWeight: FontWeight.bold,
-                            color: Theme.of(context).textTheme.titleLarge?.color,
+                            color:
+                                Theme.of(context).textTheme.titleLarge?.color,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,

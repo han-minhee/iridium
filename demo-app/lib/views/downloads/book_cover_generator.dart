@@ -35,7 +35,8 @@ class BookCoverGenerator {
       String coverPath =
           "$bokFilePathWithoutExtension-cover$coverFileExtension";
       Fimber.d("coverPath: $coverPath");
-      return saveCover(CoverInfo(coverImage, bookFilePath, coverLink!, coverPath));
+      return saveCover(
+          CoverInfo(coverImage, bookFilePath, coverLink!, coverPath));
     } else {
       return null;
     }
@@ -51,8 +52,7 @@ class BookCoverGenerator {
     }
 
     var future = File(coverInfo.coverPath).writeAsBytes(data, flush: true);
-    Fimber.d(
-        "saveCover returning file in ${coverInfo.coverPath}");
+    Fimber.d("saveCover returning file in ${coverInfo.coverPath}");
     return future;
   }
 }

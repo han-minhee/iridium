@@ -42,8 +42,8 @@ class NavigationDocumentParser {
         .findAllElements("nav", namespace: Namespaces.xhtml)
         .mapNotNull((it) => _parseNavElement(it, filePath, prefixMap))
         .toList();
-    Map<String, List<Link>> navMap = Map.fromEntries(navs
-        .flatMap((nav) => nav.$1.map((type) => MapEntry(type, nav.$2))));
+    Map<String, List<Link>> navMap = Map.fromEntries(
+        navs.flatMap((nav) => nav.$1.map((type) => MapEntry(type, nav.$2))));
     return navMap.map((key, value) {
       String suffix = key.removePrefix(Vocabularies.type);
       String updatedKey = (_keys.contains(suffix)) ? suffix : key;

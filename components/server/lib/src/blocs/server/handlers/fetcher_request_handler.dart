@@ -20,8 +20,9 @@ class FetcherRequestHandler extends RequestHandler {
   /// A [transformData] parameter is optional.
   FetcherRequestHandler(this.publication, this.viewportWidthGetter,
       {List<String> googleFonts = const [], HtmlInjector? htmlInjector})
-      : _htmlInjector = htmlInjector ?? HtmlInjector(publication, viewportWidthGetter,
-            googleFonts: googleFonts);
+      : _htmlInjector = htmlInjector ??
+            HtmlInjector(publication, viewportWidthGetter,
+                googleFonts: googleFonts);
 
   Fetcher get _fetcher => publication.fetcher;
 

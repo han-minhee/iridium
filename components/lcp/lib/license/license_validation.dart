@@ -16,8 +16,7 @@ typedef Observer = void Function(ValidatedDocuments?, Exception?);
 
 enum ObserverPolicy { once, always }
 
-sealed class DrmContextOrLicenseStatus {
-}
+sealed class DrmContextOrLicenseStatus {}
 
 class DrmContextValue extends DrmContextOrLicenseStatus {
   final DrmContext drmContext;
@@ -126,11 +125,11 @@ class LicenseValidation {
   void validate(LicenseValidationDocument document, Observer completion) {
     LVEvent event;
     if (document is LicenseValidationLicenseDocument) {
-        event = RetrievedLicenseDataEvent(document.data);
+      event = RetrievedLicenseDataEvent(document.data);
     } else if (document is LicenseValidationStatusDocument) {
-        event = RetrievedStatusDataEvent(document.data);
+      event = RetrievedStatusDataEvent(document.data);
     } else {
-        throw LcpException.unknown;
+      throw LcpException.unknown;
     }
     _log("validate $event");
     _observe(event, completion);
@@ -156,40 +155,29 @@ class LicenseValidation {
     _log("state: ${state.runtimeType}");
     try {
       if (state is StartState) {
-          _notifyObservers(null, null);
-      }
-      else if (state is ValidateLicenseState) {
+        _notifyObservers(null, null);
+      } else if (state is ValidateLicenseState) {
         _validateLicense(state.data);
-      }
-      else if (state is FetchStatusState) {
+      } else if (state is FetchStatusState) {
         await _fetchStatus(state.license);
-      }
-      else if (state is ValidateStatusState) {
+      } else if (state is ValidateStatusState) {
         _validateStatus(state.data);
-      }
-      else if (state is FetchLicenseState) {
+      } else if (state is FetchLicenseState) {
         await _fetchLicense(state.status);
-      }
-      else if (state is CheckLicenseStatusState) {
+      } else if (state is CheckLicenseStatusState) {
         _checkLicenseStatus(state.license, state.status);
-      }
-      else if (state is RetrievePassphraseState) {
+      } else if (state is RetrievePassphraseState) {
         await _requestPassphrase(state.license);
-      }
-      else if (state is ValidateIntegrityState) {
+      } else if (state is ValidateIntegrityState) {
         await _validateIntegrity(state.license, state.passphrase);
-      }
-      else if (state is RegisterDeviceState) {
+      } else if (state is RegisterDeviceState) {
         await _registerDevice(state.documents.license, state.link);
-      }
-      else if (state is ValidState) {
+      } else if (state is ValidState) {
         _notifyObservers(state.documents, null);
-      }
-      else if (state is FailureState) {
+      } else if (state is FailureState) {
         _notifyObservers(null, state.error);
-      }
-      else if (state is CancelledState) {
-          _notifyObservers(null, null);
+      } else if (state is CancelledState) {
+        _notifyObservers(null, null);
       }
     } on Exception catch (error, stacktrace) {
       _log("LicenseValidation._handle ERROR: $state",
@@ -207,8 +195,7 @@ class LicenseValidation {
     for (int i = 0; i < observers.length; i++) {
       observers[i].$1(documents, error);
     }
-    observers =
-        observers.where((it) => it.$2 != ObserverPolicy.once).toList();
+    observers = observers.where((it) => it.$2 != ObserverPolicy.once).toList();
   }
 
   void _validateLicense(ByteData data) {

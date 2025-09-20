@@ -14,10 +14,13 @@ class ThemeConfig {
     appBarTheme: const AppBarTheme(
       elevation: 0.0,
     ),
-    textSelectionTheme: TextSelectionThemeData(cursorColor: lightAccent), colorScheme: ColorScheme.fromSwatch().copyWith(
-      secondary: lightAccent,
-      brightness: Brightness.light,
-    ).copyWith(background: lightBG),
+    textSelectionTheme: TextSelectionThemeData(cursorColor: lightAccent),
+    colorScheme: ColorScheme.fromSwatch()
+        .copyWith(
+          secondary: lightAccent,
+          brightness: Brightness.light,
+        )
+        .copyWith(background: lightBG),
   );
 
   static ThemeData darkTheme = ThemeData(
@@ -27,7 +30,9 @@ class ThemeConfig {
     appBarTheme: const AppBarTheme(
       elevation: 0.0,
     ),
-    textSelectionTheme: TextSelectionThemeData(cursorColor: darkAccent), colorScheme: ColorScheme.fromSwatch()
-        .copyWith(secondary: darkAccent, brightness: Brightness.dark).copyWith(background: darkBG),
+    textSelectionTheme: TextSelectionThemeData(cursorColor: darkAccent),
+    colorScheme: ColorScheme.fromSwatch()
+        .copyWith(secondary: darkAccent, brightness: Brightness.dark)
+        .copyWith(background: darkBG),
   );
 }

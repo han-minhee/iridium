@@ -76,10 +76,10 @@ class EpubNavigatorState extends PublicationNavigatorState<EpubNavigator> {
                     publicationController: epubController,
                   )
                 : Center(
-              child: Text(
-                'Webview not implemented (yet) on this platform',
-                style: TextStyle(fontSize: 16, color: Colors.red),
-              ),
-            ),
+                    child: Text(
+                      'Webview not implemented (yet) on this platform',
+                      style: TextStyle(fontSize: 16, color: Colors.red),
+                    ),
+                  ),
       );
 }

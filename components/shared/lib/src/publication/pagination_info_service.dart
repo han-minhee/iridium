@@ -13,8 +13,8 @@ class PaginationInfosService {
   // we consider that a page is usually made of 3500 bytes
   static const int _pageSize = 3500;
 
-  static Future<(int, Map<Link, LinkPagination>)>
-      computePaginationInfos(Publication publication) async {
+  static Future<(int, Map<Link, LinkPagination>)> computePaginationInfos(
+      Publication publication) async {
     Map<Link, LinkPagination> paginationInfos = {};
     int currentPage = 1;
     for (Link link in publication.pageLinks) {

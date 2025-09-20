@@ -53,8 +53,7 @@ class MetadataParser {
     if (metadata == null) {
       return null;
     }
-    var elements =
-        _parseElements(metadata, filePath);
+    var elements = _parseElements(metadata, filePath);
     List<MetadataItem> metas = elements.$1;
     List<EpubLink> links = elements.$2;
     List<MetadataItem> metaHierarchy = _resolveMetaHierarchy(metas);
@@ -293,8 +292,7 @@ class PubMetadataAdapter extends MetadataAdapter {
     List<List<(String?, Collection)>> collectionsPartitions =
         allCollections.partition((it) => it.$1 == "series");
     List<(String?, Collection)> seriesMeta = collectionsPartitions[0];
-    List<(String?, Collection)> collectionsMeta =
-        collectionsPartitions[1];
+    List<(String?, Collection)> collectionsMeta = collectionsPartitions[1];
     belongsToCollections = collectionsMeta.map((it) => it.$2).toList();
 
     if (seriesMeta.isNotEmpty) {
@@ -331,8 +329,7 @@ class PubMetadataAdapter extends MetadataAdapter {
     allContributors = contributors
         .map((it) => it.toContributor())
         .groupBy((it) => it.$1)
-        .map((key, value) =>
-            MapEntry(key, value.map((it) => it.$2).toList()));
+        .map((key, value) => MapEntry(key, value.map((it) => it.$2).toList()));
   }
 
   Metadata metadata() => Metadata(
@@ -630,9 +627,9 @@ class MetadataItem {
     }
   }
 
-  (String?, String)? get fileAs =>
-      children["${Vocabularies.meta}file-as"]?.firstOrNull?.let(
-          (it) => (it.lang.takeUnless((it) => it == ""), it.value));
+  (String?, String)? get fileAs => children["${Vocabularies.meta}file-as"]
+      ?.firstOrNull
+      ?.let((it) => (it.lang.takeUnless((it) => it == ""), it.value));
 
   String? get titleType => firstValue("${Vocabularies.meta}title-type");
 

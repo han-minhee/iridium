@@ -60,8 +60,7 @@ class EncryptionParser {
       XmlElement? compressionElement = encryptionProperty
           .getElement("Compression", namespace: Namespaces.comp);
       if (compressionElement != null) {
-        var compression =
-            _parseCompressionElement(compressionElement);
+        var compression = _parseCompressionElement(compressionElement);
         if (compression != null) {
           return compression;
         }

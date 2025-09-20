@@ -22,9 +22,9 @@ abstract class PdfPage {
   Uint8List renderPageBitmap(int imageWidth, int imageHeight, int startX,
       int startY, int sizeX, int sizeY);
 
-  (double, double) deviceToPage(int startX, int startY, int sizeX,
-      int sizeY, int rotate, int deviceX, int deviceY);
+  (double, double) deviceToPage(int startX, int startY, int sizeX, int sizeY,
+      int rotate, int deviceX, int deviceY);
 
-  (double, double) pageToDevice(int startX, int startY, int sizeX,
-      int sizeY, int rotate, double pageX, double pageY);
+  (double, double) pageToDevice(int startX, int startY, int sizeX, int sizeY,
+      int rotate, double pageX, double pageY);
 }

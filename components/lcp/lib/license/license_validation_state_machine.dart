@@ -161,12 +161,12 @@ class LicenseValidationStateMachine {
           })
           ..state<CancelledState>((b) {})
           ..onTransition((t) {
-          if (t.value is Valid) {
-                _log("validTransition: ${t.value}");
-                licenseValidation.state = t.value.toState;
+            if (t.value is Valid) {
+              _log("validTransition: ${t.value}");
+              licenseValidation.state = t.value.toState;
+            } else if (t.value is Invalid) {
+              _log("invalidTransition: ${t.value}");
             }
-          else if (t.value is Invalid) {
-            _log("invalidTransition: ${t.value}");
-          }});
+          });
       });
 }
