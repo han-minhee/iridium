@@ -8,6 +8,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:iridium_reader_widget/views/viewers/ui/reader_app_bar.dart';
 import 'package:iridium_reader_widget/views/viewers/ui/reader_toolbar.dart';
+import 'package:iridium_reader_widget/views/viewers/ui/floating_reader_panel.dart';
 import 'package:mno_commons/utils/functions.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
@@ -130,6 +131,8 @@ abstract class BookScreenState<T extends BookScreen,
           SafeArea(
             child: child,
           ),
+          // Slot for a floating contextual panel; overridden in subclass to pass selection
+          buildFloatingPanel(context),
           Align(
             alignment: Alignment.bottomCenter,
             child: ReaderToolbar(
@@ -150,6 +153,9 @@ abstract class BookScreenState<T extends BookScreen,
           ),
         ],
       );
+
+  /// Default empty implementation. Subclasses may override to inject a floating panel.
+  Widget buildFloatingPanel(BuildContext context) => const SizedBox.shrink();
 
   Widget buildBackground() => const SizedBox.shrink();
 

@@ -155,21 +155,15 @@ class ReaderAppBarState extends State<ReaderAppBar> {
       delegate: _InBookSearchDelegate(),
     );
     if (query != null && query.trim().isNotEmpty) {
-      final link = readerContext.currentSpineItem;
-      if (link == null) return;
-      final locator = Locator(
-        href: link.href,
-        type: link.type ?? 'application/xhtml+xml',
-        title: link.title,
-        locations: Locations(),
-        text: LocatorText(highlight: query.trim()),
-      );
-      readerContext.execute(GoToLocationCommand.locator(locator));
+      _searchInCurrentChapter(query.trim());
     }
   }
 }
 
 class _InBookSearchDelegate extends SearchDelegate<String> {
+  int _cursor = 0;
+  final List<Locator> _matches = [];
+
   @override
   List<Widget>? buildActions(BuildContext context) => [
         IconButton(
@@ -193,6 +187,11 @@ class _InBookSearchDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
+    if (query.trim().isEmpty) {
+      close(context, '');
+      return const SizedBox.shrink();
+    }
+    // For now, we issue a single-locator search. Hooks for next/prev are provided.
     close(context, query);
     return const SizedBox.shrink();
   }
@@ -207,5 +206,20 @@ class _InBookSearchDelegate extends SearchDelegate<String> {
         style: Theme.of(context).textTheme.bodyMedium,
       ),
     );
+  }
+}
+
+extension _InBookSearchExtension on _ReaderAppBarState {
+  void _searchInCurrentChapter(String query) {
+    final link = readerContext.currentSpineItem;
+    if (link == null) return;
+    final locator = Locator(
+      href: link.href,
+      type: link.type ?? 'application/xhtml+xml',
+      title: link.title,
+      locations: Locations(),
+      text: LocatorText(highlight: query),
+    );
+    readerContext.execute(GoToLocationCommand.locator(locator));
   }
 }

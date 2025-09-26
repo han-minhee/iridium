@@ -15,6 +15,9 @@ import 'package:mno_server/mno_server.dart';
 import 'package:mno_shared/mediatype.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:mno_streamer/parser.dart';
+import 'package:iridium_reader_widget/views/viewers/ui/custom_selection_listener_factory.dart';
+import 'package:iridium_reader_widget/views/viewers/ui/floating_reader_panel.dart';
+import 'package:iridium_reader_widget/host_callbacks.dart';
 
 class EpubScreen extends BookScreen {
   final String? location;
@@ -121,6 +124,7 @@ class EpubScreen extends BookScreen {
 class EpubScreenState extends BookScreenState<EpubScreen, EpubController> {
   late ViewerSettingsBloc _viewerSettingsBloc;
   late ReaderThemeBloc _readerThemeBloc;
+  final ValueNotifier<Selection?> _selectionNotifier = ValueNotifier(null);
 
   @override
   void initState() {
@@ -160,7 +164,44 @@ class EpubScreenState extends BookScreenState<EpubScreen, EpubController> {
   }
 
   SelectionListenerFactory get selectionListenerFactory =>
-      SimpleSelectionListenerFactory(this);
+      CustomSelectionListenerFactory(this, _selectionNotifier);
+
+  @override
+  Widget buildFloatingPanel(BuildContext context) => Align(
+        alignment: Alignment.bottomCenter,
+        child: SafeArea(
+          top: false,
+          child: FloatingReaderPanel(
+            readerContext: readerContext,
+            selectionNotifier: _selectionNotifier,
+            onTranslate: _onTranslate,
+            onExtraInfo: _onExtraInfo,
+            onTts: _onTts,
+          ),
+        ),
+      );
+
+  void _onTranslate() {
+    // Stub: emit selection text for external handler or integrate translator
+    final text = _selectionNotifier.value?.locator.text.highlight;
+    if (text != null && text.isNotEmpty) {
+      ReaderHostCallbacks.onTranslate?.call(text);
+    }
+  }
+
+  void _onExtraInfo() {
+    final text = _selectionNotifier.value?.locator.text.highlight;
+    if (text != null && text.isNotEmpty) {
+      ReaderHostCallbacks.onExtraInfo?.call(text);
+    }
+  }
+
+  void _onTts() {
+    final text = _selectionNotifier.value?.locator.text.highlight;
+    if (text != null && text.isNotEmpty) {
+      ReaderHostCallbacks.onTts?.call(text);
+    }
+  }
 
   @override
   EpubController createPublicationController(
